@@ -1,9 +1,7 @@
-#include "particle.h"
 #include "screen.h"
 #include <time.h>
-#include <stdio.h>
+#include <iostream>
 #include <unistd.h>
-#include <pthread.h>
 
 int main() {
 
@@ -66,7 +64,7 @@ int main() {
             update();
             refresh(renderer);
             if (mouse_down && cooldown == 0) {
-                insert_particle(mouse_x/PARTICLE_SIZE,mouse_y/PARTICLE_SIZE,0xC2,0xB2,0x80,255);
+                insert_particle(mouse_x/PARTICLE_SIZE,mouse_y/PARTICLE_SIZE);
                 cooldown = 2;
             }
             ticker = 0;

@@ -20,6 +20,6 @@ extern uint8_t cursor_radius;
 void init_screen();
 void update();
 void refresh(SDL_Renderer* renderer);
-void insert_particle(int32_t x, int32_t y, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+void insert_particle(int32_t x, int32_t y);
 
 #endif // SCREEN_H

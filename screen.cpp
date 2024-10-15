@@ -2,6 +2,7 @@
 //
 
 #include "screen.h"
+#include "sand.h"
 #include <iostream>
 
 Particle* grid[VERTICAL_PARTICLES][HORIZONTAL_PARTICLES];
@@ -66,19 +67,14 @@ void refresh(SDL_Renderer* renderer) {
     SDL_RenderPresent(renderer);
 }
 
-void insert_particle(int32_t x, int32_t y, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-    // if (x < 0 || x >= HORIZONTAL_PARTICLES || y < 0 || y >= VERTICAL_PARTICLES || grid[y][x] != nullptr) {
-    //     return;
-    // }
-    // grid[y][x] = new Particle(r,g,b,a);
-
+void insert_particle(int32_t x, int32_t y) {
     for (int32_t i = y-cursor_radius; i < y+cursor_radius; i++) {
         for (int32_t j = x-cursor_radius; j < x+cursor_radius; j++) {
             if (i >= 0 && i < VERTICAL_PARTICLES
                 && j >= 0 && j < HORIZONTAL_PARTICLES && grid[y][x] == nullptr
                 && sqrt(pow((i-y),2)+pow((j-x),2)) < cursor_radius
                 && rand()%4 == 1) {
-                grid[i][j] = new Particle(r,g,b,a);
+                grid[i][j] = new Sand();
             }
         }
     }
