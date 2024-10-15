@@ -14,6 +14,9 @@
 
 extern Particle* grid[VERTICAL_PARTICLES][HORIZONTAL_PARTICLES];
 
+// Size of cursor when spawning particles
+extern uint8_t cursor_radius;
+
 void init_screen();
 void update();
 void refresh(SDL_Renderer* renderer);
