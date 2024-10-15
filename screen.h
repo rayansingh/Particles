@@ -21,5 +21,7 @@ void init_screen();
 void update();
 void refresh(SDL_Renderer* renderer);
 void insert_particle(int32_t x, int32_t y);
+void insert_particle(int32_t x, int32_t y, particle_type_t type);
+void set_particle(particle_type_t type);
 
 #endif // SCREEN_H

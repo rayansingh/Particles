@@ -4,7 +4,7 @@ CXXFLAGS = -Wall -g
 LDFLAGS = -lSDL2
 
 TARGET = particles
-SRCS = main.cpp screen.cpp particle.cpp sand.cpp
+SRCS = main.cpp screen.cpp particle.cpp sand.cpp water.cpp gravel.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 # Default target

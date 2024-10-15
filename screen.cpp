@@ -2,10 +2,11 @@
 //
 
 #include "screen.h"
-#include "sand.h"
 #include <iostream>
 
 Particle* grid[VERTICAL_PARTICLES][HORIZONTAL_PARTICLES];
+
+particle_type_t current_particle_type = SAND;
 uint8_t cursor_radius = 2;
 
 void init_screen() {
@@ -68,14 +69,36 @@ void refresh(SDL_Renderer* renderer) {
 }
 
 void insert_particle(int32_t x, int32_t y) {
+    insert_particle(x,y,current_particle_type);
+}
+
+void insert_particle(int32_t x, int32_t y, particle_type_t type) {
     for (int32_t i = y-cursor_radius; i < y+cursor_radius; i++) {
         for (int32_t j = x-cursor_radius; j < x+cursor_radius; j++) {
             if (i >= 0 && i < VERTICAL_PARTICLES
                 && j >= 0 && j < HORIZONTAL_PARTICLES && grid[y][x] == nullptr
                 && sqrt(pow((i-y),2)+pow((j-x),2)) < cursor_radius
                 && rand()%4 == 1) {
-                grid[i][j] = new Sand();
+                switch (type) {
+                    case PARTICLE:
+                        grid[i][j] = new Sand();
+                        break;
+                    case SAND:
+                        grid[i][j] = new Sand();
+                        break;
+                    case WATER:
+                        grid[i][j] = new Water();
+                        break;
+                    case GRAVEL:
+                        grid[i][j] = new Gravel();
+                        break;      
+                    default: break;
+                }
             }
         }
-    }
+    } 
+}
+
+void set_particle(particle_type_t type) {
+    current_particle_type = type;
 }

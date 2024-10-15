@@ -56,6 +56,29 @@ int main() {
                 mouse_x = event.button.x;
                 mouse_y = event.button.y;
             }
+
+            if (event.type == SDL_KEYDOWN) {
+                // Handle key press events
+                switch (event.key.keysym.sym) {
+                    case SDLK_UP:
+                        cursor_radius++;
+                        break;
+                    case SDLK_DOWN:
+                        cursor_radius--;
+                        break;
+                    case SDLK_1:
+                        set_particle(SAND);
+                        break;
+                    case SDLK_2:
+                        set_particle(WATER);
+                        break;
+                    case SDLK_3:
+                        set_particle(GRAVEL);
+                        break;
+                    // Add more cases for other keys as needed
+                    default: break;
+                }
+            }
         }
 
         usleep(10000);
