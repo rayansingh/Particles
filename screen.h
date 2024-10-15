@@ -12,11 +12,11 @@
 #define HORIZONTAL_PARTICLES (SCREEN_WIDTH/PARTICLE_SIZE)
 #define VERTICAL_PARTICLES (SCREEN_HEIGHT/PARTICLE_SIZE)
 
-extern struct particle grid[VERTICAL_PARTICLES][HORIZONTAL_PARTICLES];
+extern Particle* grid[VERTICAL_PARTICLES][HORIZONTAL_PARTICLES];
 
 void init_screen();
 void update();
 void refresh(SDL_Renderer* renderer);
-void insert_particle(uint8_t x, uint8_t y, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+void insert_particle(int32_t x, int32_t y, uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 
 #endif // SCREEN_H

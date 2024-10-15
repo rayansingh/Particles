@@ -1,22 +1,22 @@
 # Compiler and flags
-CC = gcc
-CFLAGS = -Wall -g
+CXX = g++
+CXXFLAGS = -Wall -g
 LDFLAGS = -lSDL2
 
 TARGET = particles
-SRCS = main.cc screen.cc
-OBJS = $(SRCS:.cc=.o)
+SRCS = main.cpp screen.cpp particle.cpp
+OBJS = $(SRCS:.cpp=.o)
 
 # Default target
 all: $(TARGET)
 
 # Link object files to create the executable
 $(TARGET): $(OBJS)
-	$(CC) -o $(TARGET) $(OBJS) $(LDFLAGS)
+	$(CXX) -o $(TARGET) $(OBJS) $(LDFLAGS)
 
-# Compile .cc files into .o files
-%.o: %.cc
-	$(CC) -c $(CFLAGS) $< -o $@
+# Compile .cpp files into .o files
+%.o: %.pp
+	$(CXX) -c $(CXXFLAGS) $< -o $@
 
 # Clean the project (remove object files and executable)
 clean:

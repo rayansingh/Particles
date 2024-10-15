@@ -2,45 +2,42 @@
 //
 
 #include "screen.h"
+#include <iostream>
 
-struct particle grid[VERTICAL_PARTICLES][HORIZONTAL_PARTICLES];
+Particle* grid[VERTICAL_PARTICLES][HORIZONTAL_PARTICLES];
 
 void init_screen() {
     for (uint32_t r = 0; r < (uint32_t)VERTICAL_PARTICLES; r++) {
         for (uint32_t c = 0; c < (uint32_t)HORIZONTAL_PARTICLES; c++) {
-            grid[r][c].is = 0;
-            grid[r][c].c = (SDL_Color){0,0,0,0};
+            grid[r][c] = nullptr;
         }
     }
 }
 
 void update() {
     for (int32_t r = (int32_t)VERTICAL_PARTICLES-2; r >= 0; r--) {
-        for (uint32_t c = 1; c < (uint32_t)HORIZONTAL_PARTICLES; c++) {
+        for (uint32_t c = 0; c < (uint32_t)HORIZONTAL_PARTICLES; c++) {
 
-            struct particle *p_a, *p_b;
+            Particle **p_a, **p_b;
 
             if (rand() % 2) {
-                p_a = &grid[r+1][c-1];
-                p_b = &grid[r+1][c+1];
+                p_a = c > 0 ? &grid[r+1][c-1] : nullptr;
+                p_b = c < (uint32_t)HORIZONTAL_PARTICLES-1 ? &grid[r+1][c+1] : nullptr;
             } else {
-                p_a = &grid[r+1][c+1];
-                p_b = &grid[r+1][c-1];
+                p_a = c < (uint32_t)HORIZONTAL_PARTICLES-1 ? &grid[r+1][c+1] : nullptr;
+                p_b = c > 0 ? &grid[r+1][c-1] : nullptr;
             }
 
-            if (grid[r][c].is) {
-                if (!grid[r+1][c].is) {
+            if (grid[r][c] != nullptr) {
+                if (grid[r+1][c] == nullptr) {
                     grid[r+1][c] = grid[r][c];
-                    grid[r][c].is = 0;
-                    grid[r][c].c = (SDL_Color){0,0,0,0};
-                } else if (!p_a->is) {
+                    grid[r][c] = nullptr;
+                } else if (*p_a == nullptr) {
                     *p_a = grid[r][c];
-                    grid[r][c].is = 0;
-                    grid[r][c].c = (SDL_Color){0,0,0,0};
-                } else if (!p_b->is) {
+                    grid[r][c] = nullptr;
+                } else if (*p_b == nullptr) {
                     *p_b = grid[r][c];
-                    grid[r][c].is = 0;
-                    grid[r][c].c = (SDL_Color){0,0,0,0};
+                    grid[r][c] = nullptr;
                 }
             }
         }
@@ -53,10 +50,10 @@ void refresh(SDL_Renderer* renderer) {
 
     for (uint32_t r = 0; r < (uint32_t)VERTICAL_PARTICLES; r++) {
         for (uint32_t c = 0; c < (uint32_t)HORIZONTAL_PARTICLES; c++) {
-            if (grid[r][c].is) {
+            if (grid[r][c] != nullptr) {
                 for (uint8_t y = 0; y < PARTICLE_SIZE; y++) {
                     for (uint8_t x = 0; x < PARTICLE_SIZE; x++) {
-                        SDL_Color color = grid[r][c].c;
+                        SDL_Color color = grid[r][c]->color;
                         SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
                         SDL_RenderDrawPoint(renderer, c*PARTICLE_SIZE+x,r*PARTICLE_SIZE+y);
                     }
@@ -68,7 +65,9 @@ void refresh(SDL_Renderer* renderer) {
     SDL_RenderPresent(renderer);
 }
 
-void insert_particle(uint8_t x, uint8_t y, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
-    grid[y][x].is = 1;
-    grid[y][x].c = (SDL_Color){r,g,b,a};
+void insert_particle(int32_t x, int32_t y, uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
+    if (x < 0 || x >= HORIZONTAL_PARTICLES || y < 0 || y >= VERTICAL_PARTICLES) {
+        return;
+    }
+    grid[y][x] = new Particle(r,g,b,a);
 }

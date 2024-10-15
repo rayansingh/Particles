@@ -21,8 +21,8 @@ int main() {
     
     uint8_t running = 1;
     uint8_t mouse_down = 0;
-    uint32_t mouse_x = 0;
-    uint32_t mouse_y = 0;
+    int32_t mouse_x = 0;
+    int32_t mouse_y = 0;
     uint32_t ticker = 0;
 
     uint8_t cooldown = 0;
@@ -60,11 +60,11 @@ int main() {
             }
         }
 
-        refresh(renderer);
         usleep(10000);
 
         if (ticker%1000) {
             update();
+            refresh(renderer);
             if (mouse_down && cooldown == 0) {
                 insert_particle(mouse_x/PARTICLE_SIZE,mouse_y/PARTICLE_SIZE,0xC2,0xB2,0x80,255);
                 cooldown = 2;
@@ -77,6 +77,16 @@ int main() {
         ticker++;
     }
     
+    // Free allocated particles
+
+    for (int32_t r = 0; r < VERTICAL_PARTICLES; r++) {
+        for (int32_t c = 0; c < HORIZONTAL_PARTICLES; c++) {
+            if (grid[r][c] != nullptr) {
+                delete grid[r][c];
+            }
+        }
+    }
+
     // Clean up resources
     SDL_DestroyWindow(window);
     SDL_Quit();

@@ -5,13 +5,18 @@
 #define PARTICLE_H
 
 #include <SDL2/SDL.h>
-#include <stdint.h>
+#include <cstdint>
 
 #define PARTICLE_SIZE 5
 
-struct particle {
-    uint8_t is;
-    SDL_Colour c;
+class Particle {
+public:
+    SDL_Colour color;
+
+    Particle();
+    Particle(SDL_Colour color);
+    Particle(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
 };
+
 
 #endif // PARTICLE_H
